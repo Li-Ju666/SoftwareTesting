@@ -30,7 +30,7 @@ class TestAuthorExtract(unittest.TestCase):
         (Surname,First) = bibtex.extractauthor(self.surnamefirst1)
         self.assertEqual((Surname,First),("Pearson","Justin Kenneth"))
         (Surname,First) = bibtex.extractauthor(self.surnamefirst2)
-        self.assertEqual((Surname,First),("VanHentenryck","Pascal"))
+        self.assertEqual((Surname,First),("Van Hentenryck","Pascal"))
     def testmultipleauthors(self):
         Authors = bibtex.extractauthors(self.multipleauthors1)
         self.assertEqual(Authors[0],('Pearson','Justin'))

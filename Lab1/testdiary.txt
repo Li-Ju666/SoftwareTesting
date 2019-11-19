@@ -11,7 +11,7 @@ TypeError: cannot unpack non-iterable NoneType object
 
 RED
 The built-in method 'split' was used to split the string. The function was wrote as below:
-    def extractauthor(str):
+    def extract_author(str):
         return str.split(sep = " ")
 For test 1:
 This failed as following:
@@ -20,7 +20,7 @@ The expected result should contain two parts: the surname name and an empty firs
 
 GREEN
 The function was modified as following:
-    def extractauthor(str):
+    def extract_author(str):
         result = str.split(sep = " ")
         if len(result) < 2:
             result.extend(['']*(2-len(result)))
@@ -35,7 +35,7 @@ AssertionError: Tuples differ: ('John', 'Smith') != ('Smith', 'John')
 RED
 The expected output should be in the order of Surname and First name, but our function output the name in the reversed order.
 The function was modified as following:
-    def extractauthor(str):
+    def extract_author(str):
         result = str.split(sep = " ")
         if len(result) < 2:
             result.extend(['']*(2-len(result)))
@@ -49,7 +49,7 @@ For test2: passed
 GREEN
 The expected result need the item be the surname when there is only one name without knowing if it is surname or first name.
 The function was modified as following:
-    def extractauthor(str):
+    def extract_author(str):
         result = str.split(sep = " ")
         if len(result) < 2:
             result.extend(['']*(2-len(result)))
@@ -68,3 +68,59 @@ ValueError: too many values to unpack (expected 2)
 GREEN
 The expected result have maximum two item, surname and first name. In our code, a composite name is divided into several parts.
 The function was modified as following:
+def extract_author(str):
+    result = str.split(sep = " ")
+    if len(result) > 1:
+        first_name = ''
+        for i in range(len(result)-1):
+            first_name = first_name + result[i] + " "
+        first_name = first_name[:-1]
+        surname = result[-1]
+        result = [surname, first_name]
+    if len(result) < 2:
+        result.extend(['']*(2-len(result)))
+    return result
+
+RED
+For test4: failed
+This failed as following:
+Tuples differ: ('Kenneth', 'Pearson, Justin') != ('Pearson', 'Justin Kenneth')
+
+GREEN
+It was required to modify the function to deal with surname_first format.
+The function was modified as following:
+    def extractauthor(str):
+        if str.find(",") == -1:
+            result = str.split(sep = " ")
+            if len(result) > 1:
+                first_name = ''
+                for i in range(len(result)-1):
+                    first_name = first_name + result[i] + " "
+                first_name = first_name[:-1]
+                surname = result[-1]
+                result = [surname, first_name]
+            if len(result) < 2:
+                result.extend(['']*(2-len(result)))
+        else:
+            result = str.split(sep = ", ")
+        return result
+For test1: passed
+For test2: passed
+For test3: passed
+For test4: passed
+
+RED
+For test5: failed
+The code failed as following:
+AttributeError: module 'bibtex' has no attribute 'extract_authors'
+
+GREEN
+The test required an extra function named extract_authors.
+Here is the created function:
+    def extract_authors(str):
+        result = str.split(" and ")
+        for i in range(len(result)):
+            result[i] = tuple(extract_author(result[i]))
+        return result
+
+All tests are passed. The code is working.
