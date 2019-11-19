@@ -1,0 +1,70 @@
+RED
+Import statement and first test requires us have a new module named bibtex and a function named extractauthor.
+
+Red
+We create the script named bibtex and build a function named extractauthor.
+    def extractauthor(str)
+        return None
+
+For test 1, the function failed. The result is as following:
+TypeError: cannot unpack non-iterable NoneType object
+
+RED
+The built-in method 'split' was used to split the string. The function was wrote as below:
+    def extractauthor(str):
+        return str.split(sep = " ")
+For test 1:
+This failed as following:
+ValueError: not enough values to unpack (expected 2, got 1)
+The expected result should contain two parts: the surname name and an empty first name.
+
+GREEN
+The function was modified as following:
+    def extractauthor(str):
+        result = str.split(sep = " ")
+        if len(result) < 2:
+            result.extend(['']*(2-len(result)))
+        return result
+For test1: Passed
+
+RED
+For test2:
+This failed as following:
+AssertionError: Tuples differ: ('John', 'Smith') != ('Smith', 'John')
+
+RED
+The expected output should be in the order of Surname and First name, but our function output the name in the reversed order.
+The function was modified as following:
+    def extractauthor(str):
+        result = str.split(sep = " ")
+        if len(result) < 2:
+            result.extend(['']*(2-len(result)))
+        result[0], result[1] = result[1], result[0]
+        return result
+
+For test1: failed
+AssertionError: Tuples differ: ('', 'Smith') != ('Smith', '')
+For test2: passed
+
+GREEN
+The expected result need the item be the surname when there is only one name without knowing if it is surname or first name.
+The function was modified as following:
+    def extractauthor(str):
+        result = str.split(sep = " ")
+        if len(result) < 2:
+            result.extend(['']*(2-len(result)))
+        else:
+            result[0], result[1] = result[1], result[0]
+        return result
+
+For test1: passed
+For test2: passed
+
+RED:
+For test3: failed
+This failed as following:
+ValueError: too many values to unpack (expected 2)
+
+GREEN
+The expected result have maximum two item, surname and first name. In our code, a composite name is divided into several parts.
+The function was modified as following:
